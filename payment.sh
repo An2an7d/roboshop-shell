@@ -27,21 +27,21 @@ VALIDATE(){
     fi
 }
 
-yum install python36 gcc python3-devel -y
+yum install python36 gcc python3-devel -y &>>LOGFILE
 
-VALIDATE $? "installing python"
+VALIDATE $? "installing python" &>>LOGFILE
 
-useradd roboshop
+useradd roboshop &>>LOGFILE
 
-mkdir /app 
+mkdir /app &>>LOGFILE
 
-cd /app 
+cd /app &>>LOGFILE
 
-VALIDATE $? "moving to app directory"
+VALIDATE $? "moving to app directory" &>>LOGFILE
 
 curl -L -o /tmp/payment.zip https://roboshop-builds.s3.amazonaws.com/payment.zip &>>LOGFILE
 
-VALIDATE $? "downloading artifact"
+VALIDATE $? "downloading artifact" 
 
 unzip /tmp/payment.zip &>>LOGFILE
 
