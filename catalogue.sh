@@ -42,7 +42,7 @@ then
     useradd roboshop &>>LOGFILE
 else
  exit 1
-
+fi
 mkdir /app &>>LOGFILE
 
 curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip &>>LOGFILE
