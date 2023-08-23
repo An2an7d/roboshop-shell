@@ -27,26 +27,46 @@ VALIDATE(){
     fi
 }
 
-curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>LOGFILE
 
-yum install nodejs -y
+VALIDATE $? "setting up npm resource"
 
-useradd roboshop
+yum install nodejs -y &>>LOGFILE
 
-mkdir /app
+VALIDATE $? "installing nodejs"
 
-curl -L -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip
+useradd roboshop &>>LOGFILE
 
-cd /app 
+mkdir /app &>>LOGFILE
 
-unzip /tmp/cart.zip
+curl -L -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip &>>LOGFILE
+ 
+VALIDATE $? "downloading cart artifact"
 
-npm install 
+cd /app &>>LOGFILE
 
-cp /home/centos/roboshop-shell/cart.service /etc/systemd/system/cart.service
+VALIDATE $? "moving into app directory"
 
-systemctl daemon-reload
+unzip /tmp/cart.zip &>>LOGFILE
 
-systemctl enable cart 
+VALIDATE $? "unzipping cart artifact"
 
-systemctl start cart
+npm install &>>LOGFILE
+
+VALIDATE $? "installing dependencies"
+
+cp /home/centos/roboshop-shell/cart.service /etc/systemd/system/cart.service &>>LOGFILE
+
+VALIDATE $? "copying cart service"
+
+systemctl daemon-reload &>>LOGFILE
+
+VALIDATE $? "daemon-reload"
+
+systemctl enable cart &>>LOGFILE
+
+VALIDATE $? "enabling cart"
+
+systemctl start cart &>>LOGFILE
+
+VALIDATE $? "starting cart"
