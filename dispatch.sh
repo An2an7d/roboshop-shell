@@ -26,7 +26,7 @@ VALIDATE(){
         echo -e "$2 ... $G SUCCESS $N"
     fi
 }
-yum install golang -y
+yum install golang -y &>>LOGFILE
 
 VALIDATE $? "installing golang"
 
@@ -41,42 +41,42 @@ if ! [ -d "/app" ]; then
     VALIDATE $? "creating app directory"
 fi
 
-curl -L -o /tmp/dispatch.zip https://roboshop-builds.s3.amazonaws.com/dispatch.zip
+curl -L -o /tmp/dispatch.zip https://roboshop-builds.s3.amazonaws.com/dispatch.zip &>>LOGFILE
 
 VALIDATE $? "downloading artifacts"
 
-cd /app 
+cd /app &>>LOGFILE
 
 VALIDATE $? "moving to app directory"
 
-unzip /tmp/dispatch.zip
+unzip /tmp/dispatch.zip &>>LOGFILE
 
 VALIDATE $? "unzipping dispatch"
 
-go mod init dispatch
+go mod init dispatch &>>LOGFILE
 
 VALIDATE $? "initializing a new go module"
 
-go get 
+go get &>>LOGFILE
 
 VALIDATE $? "adding dependencies to go module"
 
-go build
+go build &>>LOGFILE
 
-VALIDATE $? "compiling source and generating an executable binary files"
+VALIDATE $? "compiling source code and generating an executable binary files"
 
-cp /home/centos/roboshop-shell/dispatch.service /etc/systemd/system/dispatch.service
+cp /home/centos/roboshop-shell/dispatch.service /etc/systemd/system/dispatch.service &>>LOGFILE
 
 VALIDATE $? "copying dispatch service"
 
-systemctl daemon-reload
+systemctl daemon-reload &>>LOGFILE
 
-VALIDATE $? "daemon-reload"
+VALIDATE $? "daemon-reload" 
 
-systemctl enable dispatch
+systemctl enable dispatch &>>LOGFILE
 
 VALIDATE $? "enabling dispatch"
 
-systemctl start dispatch
+systemctl start dispatch &>>LOGFILE
 
 VALIDATE $? "starting dispatch"
