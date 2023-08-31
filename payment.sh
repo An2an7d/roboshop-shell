@@ -31,9 +31,19 @@ yum install python36 gcc python3-devel -y &>>LOGFILE
 
 VALIDATE $? "installing python" &>>LOGFILE
 
-useradd roboshop &>>LOGFILE
+id roboshop &>>LOGFILE
+if [ $? -ne 0 ]
+then
+    useradd roboshop &>>LOGFILE
+else
+    echo "User already exists"
+fi
 
-mkdir /app &>>LOGFILE
+if ! [ -d "/app" ]; then
+    mkdir /app &>>LOGFILE
+else
+    echo "/app directory already exists"
+fi
 
 cd /app &>>LOGFILE
 

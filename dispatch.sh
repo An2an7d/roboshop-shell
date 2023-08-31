@@ -34,11 +34,14 @@ id roboshop &>>LOGFILE
 if [ $? -ne 0 ]
 then
     useradd roboshop &>>LOGFILE
+else
+    echo "User already exists"
 fi
 
 if ! [ -d "/app" ]; then
     mkdir /app &>>LOGFILE
-    VALIDATE $? "creating app directory"
+else
+    echo "/app directory already exists"
 fi
 
 curl -L -o /tmp/dispatch.zip https://roboshop-builds.s3.amazonaws.com/dispatch.zip &>>LOGFILE

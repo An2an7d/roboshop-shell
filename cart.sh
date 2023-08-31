@@ -35,9 +35,19 @@ yum install nodejs -y &>>LOGFILE
 
 VALIDATE $? "installing nodejs"
 
-useradd roboshop &>>LOGFILE
+id roboshop &>>LOGFILE
+if [ $? -ne 0 ]
+then
+    useradd roboshop &>>LOGFILE
+else
+    echo "User already exists"
+fi
 
-mkdir /app &>>LOGFILE
+if ! [ -d "/app" ]; then
+    mkdir /app &>>LOGFILE
+else
+    echo "/app directory already exists"
+fi
 
 curl -L -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip &>>LOGFILE
  
